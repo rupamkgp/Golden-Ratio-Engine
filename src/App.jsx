@@ -19,13 +19,7 @@ function App() {
 
     const imageRef = useRef(null);
 
-    useEffect(() => {
-        // Pre-load MediaPipe on mount
-        initializeFaceLandmarker().catch(err => {
-            console.error("Failed to initialize FaceLandmarker:", err);
-            setErrorMsg("Failed to load required analysis models. Please refresh the page.");
-        });
-    }, []);
+
 
     const handleImageUpload = async (event) => {
         const file = event.target.files[0];
