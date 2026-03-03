@@ -1,6 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 
 const MetricRow = ({ label, measured, expected, score }) => (
     <div className="metric-row">
@@ -27,6 +28,18 @@ const MetricRow = ({ label, measured, expected, score }) => (
 const Report = ({ analysis }) => {
     const reportRef = useRef(null);
     const [isDownloading, setIsDownloading] = useState(false);
+    const count = useMotionValue(0);
+    const rounded = useTransform(count, Math.round);
+
+    useEffect(() => {
+        if (analysis) {
+            const controls = animate(count, analysis.finalScore, {
+                duration: 2,
+                ease: "easeOut"
+            });
+            return controls.stop;
+        }
+    }, [analysis]);
 
     if (!analysis) return null;
 
@@ -93,12 +106,35 @@ const Report = ({ analysis }) => {
     };
 
     return (
-        <div className="report-container" ref={reportRef}>
+        <motion.div
+            className="report-container"
+            ref={reportRef}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+        >
             <div className="report-header">
                 <h2>📐 GOLDEN RATIO ANALYSIS REPORT</h2>
                 <div className="overall-score-container">
-                    <span className="overall-label">Overall Compatibility Score</span>
-                    <span className="overall-value">{finalScore}%</span>
+                    <div className="score-circle-wrapper">
+                        <svg width="180" height="180" viewBox="0 0 180 180">
+                            <circle className="score-circle-bg" cx="90" cy="90" r="80" />
+                            <motion.circle
+                                className="score-circle-progress"
+                                cx="90"
+                                cy="90"
+                                r="80"
+                                strokeDasharray="502" // 2 * pi * 80
+                                initial={{ strokeDashoffset: 502 }}
+                                animate={{ strokeDashoffset: 502 - (502 * finalScore) / 100 }}
+                                transition={{ duration: 2, ease: "easeOut" }}
+                            />
+                        </svg>
+                        <div className="score-value">
+                            <motion.h1>{rounded}</motion.h1><span>%</span>
+                        </div>
+                    </div>
+                    <span className="overall-label">Overall Harmony</span>
                 </div>
             </div>
 
@@ -154,7 +190,7 @@ const Report = ({ analysis }) => {
                     {isDownloading ? 'GENERATING PDF...' : '⬇ DOWNLOAD REPORT AS PDF'}
                 </button>
             </div>
-        </div>
+        </motion.div>
     );
 };
 
