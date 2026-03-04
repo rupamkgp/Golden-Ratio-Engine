@@ -314,6 +314,15 @@ body {
     height: 1.2rem;
 }
 
+.loading-text {
+    color: var(--accent-gold);
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 1.5px;
+    text-align: center;
+    padding: 2rem;
+}
+
 /* Report Styles */
 .report-container {
     background: var(--panel-bg);

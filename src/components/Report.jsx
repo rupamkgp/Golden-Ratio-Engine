@@ -1,6 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react';
-import html2canvas from 'html2canvas';
-import { jsPDF } from 'jspdf';
 import { motion, useMotionValue, useTransform, animate } from 'framer-motion';
 
 const MetricRow = ({ label, measured, expected, score }) => (
@@ -50,6 +48,12 @@ const Report = ({ analysis }) => {
         setIsDownloading(true);
 
         try {
+            // Dynamically import heavy libraries only when needed
+            const [html2canvas, { jsPDF }] = await Promise.all([
+                import('html2canvas').then(m => m.default),
+                import('jspdf')
+            ]);
+
             // Use scale 1 to prevent massive canvas crashes, and save as JPEG to avoid PNG alpha channel corruption in PDF readers
             const canvas = await html2canvas(reportRef.current, {
                 scale: 1,

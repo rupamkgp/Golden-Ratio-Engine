@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import Report from './components/Report';
+const Report = React.lazy(() => import('./components/Report'));
 import SpiralBackground from './components/SpiralBackground';
 import FAQItem from './components/AnimatedFAQ';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -211,7 +211,9 @@ function App() {
 
                     {analysisResult && !loading && (
                         <div className="result-container">
-                            <Report analysis={analysisResult} />
+                            <React.Suspense fallback={<div className="loading-text">Preparing Results...</div>}>
+                                <Report analysis={analysisResult} />
+                            </React.Suspense>
                         </div>
                     )}
                 </div>
