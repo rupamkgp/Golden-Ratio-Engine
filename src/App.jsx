@@ -104,9 +104,25 @@ function App() {
 
     return (
         <div className="app-container">
+            <div style={{
+                position: 'absolute',
+                top: '0',
+                left: '0',
+                right: '0',
+                padding: '0.5rem',
+                textAlign: 'center',
+                fontSize: '0.75rem',
+                color: 'var(--text-secondary)',
+                letterSpacing: '0.5px',
+                zIndex: 10,
+                background: 'linear-gradient(180deg, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0) 100%)'
+            }}>
+                Created by <span style={{ color: 'var(--accent-gold)' }}>Rupam Haldar</span>, a student of <span style={{ color: 'var(--accent-gold)' }}>IIT Kharagpur</span> in the Department of Ocean Engg and Naval Architecture.
+            </div>
+
             <SpiralBackground />
 
-            <header className="app-header">
+            <header className="app-header" style={{ paddingTop: '3rem' }}>
                 <motion.h1
                     initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
