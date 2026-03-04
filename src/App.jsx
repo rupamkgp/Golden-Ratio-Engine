@@ -1,14 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import Report from './components/Report';
 import SpiralBackground from './components/SpiralBackground';
 import FAQItem from './components/AnimatedFAQ';
 import { motion, AnimatePresence } from 'framer-motion';
-import { initializeFaceLandmarker, analyzeFace } from './utils/faceAnalysis';
-import * as pdfjsLib from 'pdfjs-dist';
-import pdfWorker from 'pdfjs-dist/build/pdf.worker.mjs?url';
-
-// Configure the correct worker path for pdfjs
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
 
 function App() {
     const [imageSrc, setImageSrc] = useState(null);
@@ -34,6 +28,11 @@ function App() {
         if (isPdf) {
             setLoading(true);
             try {
+                // Dynamically import massive PDF.js library to split the initial bundle size
+                const pdfjsLib = await import('pdfjs-dist');
+                const pdfWorkerModule = await import('pdfjs-dist/build/pdf.worker.mjs?url');
+                pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorkerModule.default;
+
                 const arrayBuffer = await file.arrayBuffer();
                 const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
@@ -73,6 +72,9 @@ function App() {
         setLoadingStep(0);
 
         try {
+            // Dynamically import the heavy MediaPipe machine learning wrappers payload only when an image is ready
+            const { initializeFaceLandmarker, analyzeFace } = await import('./utils/faceAnalysis');
+
             const faceLandmarker = await initializeFaceLandmarker();
             const results = faceLandmarker.detect(imageRef.current);
 
