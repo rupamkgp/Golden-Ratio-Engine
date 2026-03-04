@@ -105,6 +105,25 @@ const Report = ({ analysis }) => {
         }
     };
 
+    const handleTwitterShare = () => {
+        const text = `I just scored ${Math.round(finalScore)}% on the Golden Ratio Face Test! What's your mathematical facial harmony score? 📐✨`;
+        const url = 'https://www.golden-ratio-face.com/';
+        const shareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+        window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    };
+
+    const handleFacebookShare = () => {
+        const url = 'https://www.golden-ratio-face.com/';
+        const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    };
+
+    const handleWhatsAppShare = () => {
+        const text = `I just scored ${Math.round(finalScore)}% on the Golden Ratio Face Test! What's your mathematical facial harmony score? 📐✨ Check it out: https://www.golden-ratio-face.com/`;
+        const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+        window.open(shareUrl, '_blank', 'noopener,noreferrer');
+    };
+
     return (
         <motion.div
             className="report-container"
@@ -181,11 +200,107 @@ const Report = ({ analysis }) => {
                 </div>
             </div>
 
-            <div className="download-section">
+            <div className="download-section" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+                    <button
+                        className="share-btn"
+                        onClick={handleTwitterShare}
+                        style={{
+                            background: 'transparent',
+                            border: '1px solid #1DA1F2',
+                            color: '#1DA1F2',
+                            padding: '0.8rem 1.5rem',
+                            fontSize: '0.9rem',
+                            textTransform: 'uppercase',
+                            letterSpacing: '1px',
+                            borderRadius: '50px',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(29, 161, 242, 0.1)';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                            e.currentTarget.style.boxShadow = '0 0 15px rgba(29, 161, 242, 0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.transform = 'none';
+                            e.currentTarget.style.boxShadow = 'none';
+                        }}
+                    >
+                        𝕏
+                    </button>
+                    <button
+                        className="share-btn"
+                        onClick={handleFacebookShare}
+                        style={{
+                            background: 'transparent',
+                            border: '1px solid #1877F2',
+                            color: '#1877F2',
+                            padding: '0.8rem 1.5rem',
+                            fontSize: '0.9rem',
+                            textTransform: 'uppercase',
+                            letterSpacing: '1px',
+                            borderRadius: '50px',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(24, 119, 242, 0.1)';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                            e.currentTarget.style.boxShadow = '0 0 15px rgba(24, 119, 242, 0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.transform = 'none';
+                            e.currentTarget.style.boxShadow = 'none';
+                        }}
+                    >
+                        📘 FACEBOOK
+                    </button>
+                    <button
+                        className="share-btn"
+                        onClick={handleWhatsAppShare}
+                        style={{
+                            background: 'transparent',
+                            border: '1px solid #25D366',
+                            color: '#25D366',
+                            padding: '0.8rem 1.5rem',
+                            fontSize: '0.9rem',
+                            textTransform: 'uppercase',
+                            letterSpacing: '1px',
+                            borderRadius: '50px',
+                            cursor: 'pointer',
+                            transition: 'all 0.3s ease',
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '0.5rem'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(37, 211, 102, 0.1)';
+                            e.currentTarget.style.transform = 'translateY(-2px)';
+                            e.currentTarget.style.boxShadow = '0 0 15px rgba(37, 211, 102, 0.2)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent';
+                            e.currentTarget.style.transform = 'none';
+                            e.currentTarget.style.boxShadow = 'none';
+                        }}
+                    >
+                        💬 WHATSAPP
+                    </button>
+                </div>
                 <button
                     className="download-btn"
                     onClick={handleDownload}
                     disabled={isDownloading}
+                    style={{ marginTop: '1rem' }}
                 >
                     {isDownloading ? 'GENERATING PDF...' : '⬇ DOWNLOAD REPORT AS PDF'}
                 </button>
